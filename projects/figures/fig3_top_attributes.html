@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.plot.ly/plotly-3.3.1.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 16px; }
+    .controls { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    select { padding: 5px; }
+    #summary { margin: 10px 0 14px 0; line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <label>Group by: <select id="attr"></select></label>
+    <label>Top N: <select id="topn"></select></label>
+  </div>
+  <div id="summary"></div>
+  <div id="pie" style="height:520px;"></div>
+
+<script>
+const attributes = ["Production Company", "Director", "Distributor"];
+const topns = [5, 10, 15];
+const countsData = {"Production Company||5": {"labels": ["Mission Street Productions...", "Warner Bros. Pictures", "Paramount Pictures", "TVM Productions", "Turner North Center Produc..."], "values": [125, 99, 91, 84, 58], "total": 457}, "Production Company||10": {"labels": ["Mission Street Productions...", "Warner Bros. Pictures", "Paramount Pictures", "TVM Productions", "Turner North Center Produc...", "Unpronounceable Production...", "CBS Films Inc.", "LBMISF, LLC", "Apple Studios, LLC", "Minim Productions"], "values": [125, 99, 91, 84, 58, 42, 39, 33, 32, 32], "total": 635}, "Production Company||15": {"labels": ["Mission Street Productions...", "Warner Bros. Pictures", "Paramount Pictures", "TVM Productions", "Turner North Center Produc...", "Unpronounceable Production...", "CBS Films Inc.", "LBMISF, LLC", "Apple Studios, LLC", "Minim Productions", "TVM Productions Inc.", "Village NB Productions, LL...", "The Malpaso Company", "Orion Pictures Corp.", "Po Valley Productions, LLC"], "values": [125, 99, 91, 84, 58, 42, 39, 33, 32, 32, 30, 30, 30, 28, 28], "total": 781}, "Director||5": {"labels": ["Andrew Haigh", "Steven Bochcho", "Peyton Reed", "Jon Lucas, Scott Moore", "Joe Talbot"], "values": [125, 58, 41, 39, 33], "total": 296}, "Director||10": {"labels": ["Andrew Haigh", "Steven Bochcho", "Peyton Reed", "Jon Lucas, Scott Moore", "Joe Talbot", "Philip Kaufman", "Alex Garland", "Woody Allen", "Greg Beeman", "Rozann Dawson"], "values": [125, 58, 41, 39, 33, 32, 32, 31, 30, 30], "total": 451}, "Director||15": {"labels": ["Andrew Haigh", "Steven Bochcho", "Peyton Reed", "Jon Lucas, Scott Moore", "Joe Talbot", "Philip Kaufman", "Alex Garland", "Woody Allen", "Greg Beeman", "Rozann Dawson", "Sam Miller, Kevin Rodney S...", "Buddy Van Horn", "Gus Van Sant", "Chris Columbus", "Lenny Abrahamson"], "values": [125, 58, 41, 39, 33, 32, 32, 31, 30, 30, 29, 29, 28, 28, 28], "total": 593}, "Distributor||5": {"labels": ["Netflix", "Warner Bros. Pictures", "Paramount Pictures", "HBO", "HULU"], "values": [165, 163, 154, 93, 84], "total": 659}, "Distributor||10": {"labels": ["Netflix", "Warner Bros. Pictures", "Paramount Pictures", "HBO", "HULU", "TBD", "Warner Brothers", "Turner Network Television ...", "Buena Vista Pictures", "Sony Pictures Classics"], "values": [165, 163, 154, 93, 84, 63, 59, 58, 52, 51], "total": 942}, "Distributor||15": {"labels": ["Netflix", "Warner Bros. Pictures", "Paramount Pictures", "HBO", "HULU", "TBD", "Warner Brothers", "Turner Network Television ...", "Buena Vista Pictures", "Sony Pictures Classics", "Columbia Pictures", "Universal Pictures", "Walt Disney Studios Motion...", "Home Box Office (HBO)", "Lionsgate"], "values": [165, 163, 154, 93, 84, 63, 59, 58, 52, 51, 49, 48, 45, 42, 42], "total": 1168}};
+const attrSelect = document.getElementById("attr");
+const topnSelect = document.getElementById("topn");
+const summaryDiv = document.getElementById("summary");
+
+attributes.forEach(v => {
+  const option = document.createElement("option");
+  option.value = v;
+  option.textContent = v;
+  attrSelect.appendChild(option);
+});
+topns.forEach(v => {
+  const option = document.createElement("option");
+  option.value = v;
+  option.textContent = v;
+  topnSelect.appendChild(option);
+});
+
+function updatePie() {
+  const attr = attrSelect.value;
+  const n = topnSelect.value;
+  const key = attr + "||" + n;
+  const data = countsData[key];
+  summaryDiv.innerHTML =
+    "<b>Grouped by:</b> " + attr + "<br>" +
+    "<b>Showing:</b> Top " + n + " categories<br>" +
+    "<b>Total records in visible categories:</b> " + data.total;
+
+  Plotly.react("pie", [{
+    type: "pie",
+    labels: data.labels,
+    values: data.values,
+    hole: 0.35,
+    textinfo: "label+percent",
+    hovertemplate: "Category=%{label}<br>Records=%{value}<extra></extra>"
+  }], {
+    title: "Top " + n + " " + attr + " Categories",
+    margin: {l: 20, r: 20, t: 60, b: 20}
+  }, {responsive: true});
+}
+
+attrSelect.addEventListener("change", updatePie);
+topnSelect.addEventListener("change", updatePie);
+updatePie();
+</script>
+</body>
+</html>

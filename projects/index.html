@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Film Locations in San Francisco</title>
+  <style>
+    body {
+      max-width: 1120px;
+      margin: 40px auto;
+      padding: 0 22px;
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #222;
+    }
+    h1 { font-size: 36px; margin-bottom: 8px; }
+    h2 { margin-top: 38px; }
+    iframe {
+      width: 100%;
+      border: 1px solid #ddd;
+      margin: 12px 0 28px 0;
+      background: white;
+    }
+    .note { color: #555; }
+  </style>
+</head>
+<body>
+  <h1>Film Locations in San Francisco</h1>
+  <p><strong>Author:</strong> Xiaoshi Lu</p>
+
+  <p>
+    San Francisco has appeared in many films, but the locations are not evenly spread across time or space. This article uses the Film Locations in San Francisco dataset to show when film-location records appear, where selected records are located, and which film-related organizations or people appear most often.
+  </p>
+
+  <p>
+    The main interactive visualization is Figure 2. It lets the reader choose a neighborhood and decade, then compares the number of records by decade with the actual coordinate points available for that selected group. This makes the dataset easier for a public reader to explore without needing to read the raw table.
+  </p>
+
+  <p>
+    Figures 1 and 3 provide context. Figure 1 shows how the number of records changes by release year, while Figure 3 summarizes common production companies, directors, and distributors. Together, the three figures connect time, place, and film-production attributes.
+  </p>
+
+  <h2>Figure 1: Film Location Records by Release Year</h2>
+  <p class="note">Use the range slider under the chart to focus on a smaller year range.</p>
+  <iframe src="./figures/fig1_year_records.html" height="650"></iframe>
+
+  <h2>Figure 2: Neighborhood and Decade Location Explorer</h2>
+  <p class="note">Choose a neighborhood and decade. The bar chart and real map update together.</p>
+  <iframe src="./figures/fig2_neighborhood_dashboard.html" height="720"></iframe>
+
+  <h2>Figure 3: Top Film-Related Attributes</h2>
+  <p class="note">Use the dropdown controls to switch between production company, director, and distributor.</p>
+  <iframe src="./figures/fig3_top_attributes.html" height="680"></iframe>
+
+  <h2>Data Source</h2>
+  <p>
+    Data source: Film Locations in San Francisco, Data.gov / DataSF. The dataset includes film titles, release years, locations, production information, neighborhoods, and coordinate fields when available.
+  </p>
+</body>
+</html>
