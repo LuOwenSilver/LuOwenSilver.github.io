@@ -2,58 +2,279 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Film Locations in San Francisco</title>
+  <title>San Francisco on Screen: Exploring Filming Records</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
   <style>
     body {
-      max-width: 1120px;
-      margin: 40px auto;
-      padding: 0 22px;
-      font-family: Arial, sans-serif;
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 24px;
+      font-family: Georgia, "Times New Roman", serif;
       line-height: 1.6;
       color: #222;
     }
-    h1 { font-size: 36px; margin-bottom: 8px; }
-    h2 { margin-top: 38px; }
-    iframe {
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .authors {
+      margin: 0 0 24px;
+      text-align: center;
+      color: #444;
+      font-size: 16px;
+    }
+
+    .introduction {
+      text-align: left;
+    }
+
+    .section-title {
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .introduction p {
+      text-indent: 2em;
+    }
+
+    .intro-box {
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 16px 20px;
+      background: #f7f7f7;
+    }
+
+    .dashboard-info-grid {
+      display: flex;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .dashboard-info-grid .intro-box {
+      flex: 1;
+    }
+
+    .contextual-grid {
+      display: flex;
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .contextual-card {
+      flex: 1;
+      border: 1px solid #bbb;
+      border-radius: 8px;
+      padding: 16px;
+      background: #f7f7f7;
+    }
+
+    .image-placeholder {
+      height: 220px;
+      border: 1px dashed #999;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      background: #fff;
+      margin-bottom: 12px;
+    }
+
+    .contextual-card img {
       width: 100%;
+      aspect-ratio: 1 / 1;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      margin-bottom: 12px;
+      background: #fff;
+      border-radius: 6px;
+    }
+
+    .contextual-card p {
+      margin: 0;
+    }
+
+    .note {
+      color: #555;
+      margin-bottom: 24px;
+    }
+
+    #main-dashboard {
       border: 1px solid #ddd;
-      margin: 12px 0 28px 0;
+      padding: 18px;
       background: white;
     }
-    .note { color: #555; }
+
+    .footer-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 32px 0 8px;
+      flex-wrap: wrap;
+    }
+
+    .footer-buttons a {
+      display: inline-block;
+      padding: 10px 16px;
+      border: 1px solid #222;
+      border-radius: 4px;
+      color: #222;
+      background: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+
+    .footer-buttons a:hover {
+      background: #f2f2f2;
+    }
+
+    .footer-buttons .contextual-part {
+      margin-left: 24px;
+    }
   </style>
 </head>
+
 <body>
-  <h1>Film Locations in San Francisco</h1>
-  <p><strong>Author:</strong> Xiaoshi Lu</p>
+  <h1>San Francisco on Screen: Exploring Filming Records</h1>
 
-  <p>
-    San Francisco has appeared in many films, but the locations are not evenly spread across time or space. This article uses the Film Locations in San Francisco dataset to show when film-location records appear, where selected records are located, and which film-related organizations or people appear most often.
-  </p>
+  <p class="authors">Author: Group 18 - Jiaqi Lu</p>
 
-  <p>
-    The main interactive visualization is Figure 2. It lets the reader choose a neighborhood and decade, then compares the number of records by decade with the actual coordinate points available for that selected group. This makes the dataset easier for a public reader to explore without needing to read the raw table.
-  </p>
+  <section class="introduction">
+    <h2 class="section-title"><em>&lt;Introduction&gt;</em></h2>
 
-  <p>
-    Figures 1 and 3 provide context. Figure 1 shows how the number of records changes by release year, while Figure 3 summarizes common production companies, directors, and distributors. Together, the three figures connect time, place, and film-production attributes.
-  </p>
+    <div class="intro-box">
+    <p>
+      San Francisco is not only a tourist city, but also an popular filming location for many movies and television productions. Filming locations in the city are not randomly distributed. Some neighborhoods, landmarks, and areas appear more frequently in screen productions than others. This project uses the “Film Locations in San Francisco” dataset to explore how film-location records change across years, neighborhoods, and production attributes. For example, it looks at which years have more location records, which production companies or directors appear more often, and which neighborhoods are more commonly used as filming locations.
+    </p>
 
-  <h2>Figure 1: Film Location Records by Release Year</h2>
-  <p class="note">Use the range slider under the chart to focus on a smaller year range.</p>
-  <iframe src="./figures/fig1_year_records.html" height="650"></iframe>
+    <p>
+      The dataset includes basic information about each film record, such as the movie title, release year, filming location, people and companies involved, and map coordinates. With this information, we can explore not only when filming happened, but also where it happened and which parts of San Francisco appeared most often on screen.
+    </p>
+    </div>
+  </section>
 
-  <h2>Figure 2: Neighborhood and Decade Location Explorer</h2>
-  <p class="note">Choose a neighborhood and decade. The bar chart and real map update together.</p>
-  <iframe src="./figures/fig2_neighborhood_dashboard.html" height="720"></iframe>
+  <h2 class="section-title"><em>&lt;Figure 1: When Films Came to San Francisco and Who Made Them&gt;</em></h2>
 
-  <h2>Figure 3: Top Film-Related Attributes</h2>
-  <p class="note">Use the dropdown controls to switch between production company, director, and distributor.</p>
-  <iframe src="./figures/fig3_top_attributes.html" height="680"></iframe>
+  <div id="main-dashboard"></div>
 
-  <h2>Data Source</h2>
-  <p>
-    Data source: Film Locations in San Francisco, Data.gov / DataSF. The dataset includes film titles, release years, locations, production information, neighborhoods, and coordinate fields when available.
-  </p>
+  <script>
+    vegaEmbed(
+      "#main-dashboard",
+      "figures/main_dashboard.json",
+      {
+        actions: false
+      }
+    ).catch(function(error) {
+      document.getElementById("main-dashboard").innerHTML =
+        "<p style='color:red;'>Chart load fail. Check that the JSON file path.</p>";
+      console.error(error);
+    });
+  </script>
+
+  <div class="dashboard-info-grid">
+    <div class="intro-box">
+      <p>
+        Figure 1 shows how San Francisco film-location records change over time and connects those yearly patterns with major production attributes. The line chart shows the number of film-location records by release year. After a year is selected, the bar charts show the most common production companies, directors, or distributors connected to records from that year.
+      </p>
+    </div>
+
+    <div class="intro-box">
+      <p>How to interact with Figure 1:</p>
+
+      <ul>
+        <li>Drag the small chart at the bottom-left to choose a year range.</li>
+        <li>Click a point in the upper-left chart to select one year.</li>
+        <li>Use the attribute menu to switch between production company, director, and distributor.</li>
+        <li>Use the Top N menu to show the top 5, 10, or 15 results.</li>
+        <li>The right chart updates based on the selected year and attribute.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title"><em>&lt;Figure 2: Film Locations by Neighborhood and Decade&gt;</em></h2>
+
+  <iframe 
+    src="figures/dashboard2.html" 
+    height="650"
+    width="100%">
+  </iframe>
+
+  <div class="dashboard-info-grid">
+    <div class="intro-box">
+      <p>
+        Figure 2 focuses on the location side of the dataset. While Figure 1 shows changes by year and production attribute, this view shows how film-location records are distributed across San Francisco neighborhoods and decades. The bar chart gives a quick comparison of record counts, while the map connects the selected neighborhood and decade to real places in the city.
+      </p>
+    </div>
+
+    <div class="intro-box">
+      <p>How to Use Figure 2:</p>
+
+      <ul>
+        <li>Choose a San Francisco neighborhood from the dropdown menu.</li>
+        <li>Click on decade bar chart to pick the time period.</li>
+        <li>The bar chart updates to show location records counts.</li>
+        <li>The map updates at the same time to show where those records are located.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2 class="section-title"><em>&lt;Supporting Contextual Visualizations&gt;</em></h2>
+
+  <div class="contextual-grid">
+    <div class="contextual-card">
+      <a href="figures/neighborhood.png" target="_blank" rel="noopener noreferrer">
+        <img src="figures/neighborhood.png" alt="Neighborhood contextual visualization">
+      </a>
+      <p>*Contextual Viz1</p>
+      <p><strong><br>DataSF — Analysis Neighborhoods</strong></p>
+      <p>
+        This map shows how San Francisco is divided into neighborhoods. It gives background for Figure 2 because the film-location dataset also uses neighborhood names to group records. This map helps connect the neighborhood categories in the dataset with actual areas of the city.
+      </p>
+    </div>
+
+    <div class="contextual-card">
+      <a href="figures/landmark.png" target="_blank" rel="noopener noreferrer">
+        <img src="figures/landmark.png" alt="Landmark contextual visualization">
+      </a>
+      <p>*Contextual Viz2</p>
+      <p><strong><br>San Francisco Planning — Historic Landmarks Map</strong></p>
+      <p>
+        This map shows San Francisco landmarks and landmark districts. It adds cultural and historical context to the film-location data because many filming locations are also recognizable city spaces. This background helps explain why some areas may appear more often in film-location records.
+      </p>
+    </div>
+  </div>
+
+  <h2 class="section-title"><em>&lt;Summary&gt;</em></h2>
+
+  <div class="intro-box">
+    <p>
+      The visualizations show that San Francisco’s film-location records are not evenly spread across time or across the city. In the yearly trend, film-location records rise over the long term and reach a high point around 2015. After 2020, the number of records drops sharply, which may be related to the disruption caused by COVID-19 and the difficulty of filming on location during that period. After 2023, the records begin to show signs of recovery.
+    </p>
+
+    <p>
+      The neighborhood view adds another layer to this story. Some neighborhoods appear much more often than others, so filming activity is not simply spread evenly across San Francisco. Many records are located near recognizable buildings, landmarks, waterfront areas, downtown spaces, or transportation locations such as the airport. These places may be easier to recognize on screen, easier to use for certain scenes, or more useful for building a strong visual image of the city.
+    </p>
+
+    <p>
+      The production-attribute view also shows that the dataset includes different kinds of organizations connected to film-location records. Some names may not look like traditional film studios and could be related to production support, distribution, or other contracted roles. Because of this, the project does not only show movie titles and locations, but also includes some background about the companies and people connected to the records.
+    </p>
+  </div>
+
+  <div class="footer-buttons">
+    <a href="https://catalog.data.gov/dataset/film-locations-in-san-francisco" target="_blank" rel="noopener noreferrer">Source Data</a>
+    <a href="https://github.com/LuOwenSilver/LuOwenSilver.github.io/blob/main/projects/final.ipynb" target="_blank" rel="noopener noreferrer">Github ipynb</a>
+    <a class="contextual-part" href="https://data.sfgov.org/-/Analysis-Neighborhoods/p5b7-5n3h" target="_blank" rel="noopener noreferrer">*Source: Contextual Data1</a>
+    <a href="https://sfplanning.org/resource/historic-landmarks-map?page=3313#print" target="_blank" rel="noopener noreferrer">*Source: Contextual Data2</a>
+  </div>
+
 </body>
 </html>
