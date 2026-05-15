@@ -72,17 +72,36 @@ function updatePlots() {
   });
 
   Plotly.react("bar", [{
-    type: "bar",
-    x: counts.x,
-    y: counts.y,
-    marker: { color: barColors },
-    hovertemplate: "Decade=%{x}<br>Records=%{y}<extra></extra>"
-  }], {
-    title: "Click a Decade Bar: " + nb,
-    xaxis: { title: "Decade" },
-    yaxis: { title: "Records" },
-    margin: {l: 55, r: 20, t: 60, b: 55}
-  }, {responsive: true});
+  type: "bar",
+  x: counts.x,
+  y: counts.y,
+  marker: { color: barColors },
+  hovertemplate: "Decade=%{x}<br>Film location records=%{y}<extra></extra>"
+}], {
+  title: {
+    text: "Film Location Records by Decade",
+    x: 0.5,
+    xanchor: "center"
+  },
+  xaxis: {
+    title: {
+      text: "Release Decade",
+      standoff: 12
+    },
+    tickmode: "array",
+    tickvals: counts.x,
+    ticktext: counts.x.map(x => x + ""),
+    automargin: true
+  },
+  yaxis: {
+    title: {
+      text: "Number of Film Location Records",
+      standoff: 12
+    },
+    automargin: true
+  },
+  margin: {l: 95, r: 25, t: 80, b: 75}
+}, {responsive: true});
 
   const hoverText = geo.title.map((t, i) =>
     "<b>" + t + "</b><br>" +
@@ -141,7 +160,6 @@ document.getElementById("bar").on("plotly_click", function(data) {
   updatePlots();
 });
 
-decSelect.addEventListener("change", updatePlots);
 </script>
 </body>
 </html>
